@@ -1,0 +1,123 @@
+{
+  "trade_date": "2026-05-31",
+  "scan_time": "2026-05-31T14:50:00",
+  "manual_theme_hints": ["半导体", "机器人"],
+  "theme_candidates": [
+    {
+      "theme_name": "半导体",
+      "theme_aliases": ["芯片", "集成电路"],
+      "related_sectors": ["BK0477", "BK0478"],
+      "core_stocks": ["688981.SH", "002049.SZ"],
+      "trend_mid_caps": ["600584.SH", "002156.SZ"],
+      "elastic_stocks": ["300661.SZ"],
+      "replacement_candidates": ["603986.SH"],
+      "attention_pool_stocks": ["600584.SH", "002156.SZ"],
+      "out_of_pool_stocks": ["688981.SH"],
+      "evidence": [
+        {
+          "evidence_type": "sector_strength",
+          "description": "半导体板块涨幅 +3.50%，排名第一",
+          "source": "eastmoney",
+          "related_sectors": ["BK0477"],
+          "related_stocks": ["688981.SH", "002049.SZ"],
+          "score_contribution": 85.0,
+          "confidence": 0.9,
+          "data_status": "fresh"
+        },
+        {
+          "evidence_type": "limit_up_cluster",
+          "description": "半导体板块涨停 5 家",
+          "source": "eastmoney",
+          "related_sectors": ["BK0477"],
+          "related_stocks": ["600584.SH"],
+          "score_contribution": 75.0,
+          "confidence": 0.85,
+          "data_status": "fresh"
+        },
+        {
+          "evidence_type": "attention_pool_overlap",
+          "description": "Attention Pool 中有 2 只半导体股票",
+          "source": "local_builder",
+          "related_stocks": ["600584.SH", "002156.SZ"],
+          "score_contribution": 60.0,
+          "confidence": 1.0,
+          "data_status": "fresh"
+        }
+      ],
+      "theme_score": 72.0,
+      "theme_level": "A",
+      "theme_status": "strengthening",
+      "is_new_theme": false,
+      "is_one_day_noise_candidate": false,
+      "warnings": [],
+      "risks": []
+    },
+    {
+      "theme_name": "机器人",
+      "theme_aliases": ["人形机器人", "工业机器人"],
+      "related_sectors": ["BK0800"],
+      "core_stocks": ["300024.SZ"],
+      "trend_mid_caps": [],
+      "elastic_stocks": [],
+      "replacement_candidates": [],
+      "attention_pool_stocks": [],
+      "out_of_pool_stocks": ["300024.SZ"],
+      "evidence": [
+        {
+          "evidence_type": "sector_strength",
+          "description": "机器人板块涨幅 +1.20%，排名中等",
+          "source": "eastmoney",
+          "related_sectors": ["BK0800"],
+          "score_contribution": 40.0,
+          "confidence": 0.6,
+          "data_status": "fresh"
+        },
+        {
+          "evidence_type": "policy_or_news_catalyst",
+          "description": "人形机器人政策预期",
+          "source": "news",
+          "related_sectors": ["BK0800"],
+          "score_contribution": 30.0,
+          "confidence": 0.5,
+          "data_status": "stale"
+        }
+      ],
+      "theme_score": 32.0,
+      "theme_level": "B",
+      "theme_status": "emerging",
+      "is_new_theme": true,
+      "is_one_day_noise_candidate": false,
+      "warnings": ["板块数据可能过期"],
+      "risks": []
+    },
+    {
+      "theme_name": "房地产",
+      "theme_aliases": [],
+      "related_sectors": ["BK0451"],
+      "core_stocks": [],
+      "trend_mid_caps": [],
+      "elastic_stocks": [],
+      "replacement_candidates": [],
+      "attention_pool_stocks": [],
+      "out_of_pool_stocks": [],
+      "evidence": [
+        {
+          "evidence_type": "sector_strength",
+          "description": "房地产板块涨幅 -0.50%，排名靠后",
+          "source": "eastmoney",
+          "related_sectors": ["BK0451"],
+          "score_contribution": 10.0,
+          "confidence": 0.8,
+          "data_status": "fresh"
+        }
+      ],
+      "theme_score": 10.0,
+      "theme_level": "C",
+      "theme_status": "one_day_noise",
+      "is_new_theme": false,
+      "is_one_day_noise_candidate": true,
+      "warnings": [],
+      "risks": []
+    }
+  ]
+}

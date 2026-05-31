@@ -1,0 +1,162 @@
+{
+  "trade_date": "2026-05-31",
+  "scan_time": "2026-05-31T14:50:00",
+  "indexes": [
+    {
+      "index_code": "000001.SH",
+      "index_name": "上证指数",
+      "latest_price": 3250.50,
+      "pct_change": 0.85,
+      "turnover": 4500.0,
+      "volume": 320000000000,
+      "as_of_time": "2026-05-31T14:50:00",
+      "source": "mootdx"
+    },
+    {
+      "index_code": "399001.SZ",
+      "index_name": "深证成指",
+      "latest_price": 10500.20,
+      "pct_change": 1.20,
+      "turnover": 5500.0,
+      "volume": 420000000000,
+      "as_of_time": "2026-05-31T14:50:00",
+      "source": "mootdx"
+    },
+    {
+      "index_code": "399006.SZ",
+      "index_name": "创业板指",
+      "latest_price": 2100.80,
+      "pct_change": 1.50,
+      "turnover": 2200.0,
+      "volume": 180000000000,
+      "as_of_time": "2026-05-31T14:50:00",
+      "source": "mootdx"
+    }
+  ],
+  "market_breadth": {
+    "up_count": 3200,
+    "down_count": 1500,
+    "flat_count": 300,
+    "limit_up_count": 88,
+    "limit_down_count": 7,
+    "real_limit_up_count": 75,
+    "real_limit_down_count": 5,
+    "broken_limit_up_count": 15,
+    "limit_up_open_fail_count": 8,
+    "high_board_height": 4,
+    "as_of_time": "2026-05-31T14:50:00",
+    "source": "mootdx"
+  },
+  "turnover": {
+    "total_market_turnover": 10000.0,
+    "sh_turnover": 4500.0,
+    "sz_turnover": 5500.0,
+    "bj_turnover": 150.0,
+    "turnover_change_vs_previous_day": 15.5,
+    "as_of_time": "2026-05-31T14:50:00",
+    "source": "mootdx"
+  },
+  "sectors": [
+    {
+      "sector_code": "BK0477",
+      "sector_name": "半导体",
+      "pct_change": 3.50,
+      "turnover": 850.0,
+      "turnover_rank": 1,
+      "limit_up_count": 5,
+      "strong_stock_count": 12,
+      "leading_stocks": ["688981.SH", "002049.SZ"],
+      "source": "eastmoney",
+      "as_of_time": "2026-05-31T14:50:00"
+    },
+    {
+      "sector_code": "BK0478",
+      "sector_name": "消费电子",
+      "pct_change": 2.80,
+      "turnover": 650.0,
+      "turnover_rank": 2,
+      "limit_up_count": 3,
+      "strong_stock_count": 8,
+      "leading_stocks": ["002475.SZ", "300433.SZ"],
+      "source": "eastmoney",
+      "as_of_time": "2026-05-31T14:50:00"
+    },
+    {
+      "sector_code": "BK0479",
+      "sector_name": "电力",
+      "pct_change": 1.80,
+      "turnover": 420.0,
+      "turnover_rank": 5,
+      "limit_up_count": 6,
+      "strong_stock_count": 10,
+      "leading_stocks": ["600726.SH", "600758.SH"],
+      "source": "eastmoney",
+      "as_of_time": "2026-05-31T14:50:00"
+    },
+    {
+      "sector_code": "BK0480",
+      "sector_name": "房地产",
+      "pct_change": -0.50,
+      "turnover": 180.0,
+      "turnover_rank": 15,
+      "limit_up_count": 1,
+      "strong_stock_count": 2,
+      "leading_stocks": [],
+      "source": "eastmoney",
+      "as_of_time": "2026-05-31T14:50:00"
+    }
+  ],
+  "strong_stocks": [
+    {
+      "ticker": "600584.SH",
+      "name": "长电科技",
+      "pct_change": 9.98,
+      "turnover": 25.5,
+      "rank_by_turnover": 5,
+      "rank_by_pct_change": 10,
+      "is_limit_up": true,
+      "is_broken_limit_up": false,
+      "board_type": "main_board_sh",
+      "sector_names": ["半导体", "封装测试"],
+      "source": "mootdx",
+      "as_of_time": "2026-05-31T14:50:00"
+    },
+    {
+      "ticker": "300750.SZ",
+      "name": "宁德时代",
+      "pct_change": 5.20,
+      "turnover": 85.0,
+      "rank_by_turnover": 1,
+      "rank_by_pct_change": 25,
+      "is_limit_up": false,
+      "is_broken_limit_up": false,
+      "board_type": "chinext",
+      "sector_names": ["电池", "新能源"],
+      "source": "mootdx",
+      "as_of_time": "2026-05-31T14:50:00"
+    },
+    {
+      "ticker": "600726.SH",
+      "name": "华电能源",
+      "pct_change": 10.00,
+      "turnover": 8.2,
+      "rank_by_turnover": 30,
+      "rank_by_pct_change": 1,
+      "is_limit_up": true,
+      "is_broken_limit_up": false,
+      "board_type": "main_board_sh",
+      "sector_names": ["电力"],
+      "source": "mootdx",
+      "as_of_time": "2026-05-31T14:50:00"
+    }
+  ],
+  "limit_up_pool": {
+    "trade_date": "2026-05-31",
+    "limit_up_stocks": ["600584.SH", "600726.SH", "002156.SZ", "600758.SH"],
+    "limit_down_stocks": [],
+    "broken_limit_up_stocks": ["000725.SZ"],
+    "high_board_height": 4,
+    "source": "eastmoney",
+    "as_of_time": "2026-05-31T14:50:00"
+  }
+}

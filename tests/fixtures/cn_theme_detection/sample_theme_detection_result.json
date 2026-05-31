@@ -1,0 +1,42 @@
+{
+  "trade_date": "2026-05-31",
+  "scan_time": "2026-05-31T14:50:00",
+  "theme_candidates": [
+    {
+      "theme_name": "半导体",
+      "theme_aliases": ["芯片", "集成电路"],
+      "related_sectors": ["BK0477", "BK0478"],
+      "core_stocks": ["688981.SH", "002049.SZ"],
+      "trend_mid_caps": ["600584.SH", "002156.SZ"],
+      "elastic_stocks": ["300661.SZ"],
+      "replacement_candidates": ["603986.SH"],
+      "attention_pool_stocks": ["600584.SH", "002156.SZ"],
+      "out_of_pool_stocks": ["688981.SH"],
+      "evidence": [
+        {
+          "evidence_type": "sector_strength",
+          "description": "半导体板块涨幅 +3.50%，排名第一",
+          "source": "eastmoney",
+          "related_sectors": ["BK0477"],
+          "related_stocks": ["688981.SH", "002049.SZ"],
+          "score_contribution": 85.0,
+          "confidence": 0.9,
+          "data_status": "fresh"
+        }
+      ],
+      "theme_score": 72.0,
+      "theme_level": "A",
+      "theme_status": "strengthening",
+      "is_new_theme": false,
+      "is_one_day_noise_candidate": false,
+      "warnings": [],
+      "risks": []
+    }
+  ],
+  "strongest_themes": ["半导体"],
+  "watch_themes": ["机器人"],
+  "weak_or_noise_themes": ["房地产"],
+  "warnings": ["No real theme detection algorithm implemented (skeleton mode)"],
+  "blocking_reasons": [],
+  "can_continue_to_candidate_selection": true
+}

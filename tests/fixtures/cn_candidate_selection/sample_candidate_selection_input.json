@@ -1,0 +1,105 @@
+{
+  "trade_date": "2026-05-31",
+  "scan_time": "2026-05-31T14:50:00",
+  "manual_constraints": {
+    "prefer_main_board": true,
+    "high_price_threshold": 120.0,
+    "avoid_limit_up": true,
+    "allow_non_main_board": false
+  },
+  "theme_candidates": [
+    {
+      "theme_name": "半导体",
+      "core_stocks": [
+        {
+          "ticker": "600584.SH",
+          "name": "长电科技",
+          "theme_name": "半导体",
+          "source_type": "attention_pool",
+          "board_type": "main_board_sh",
+          "is_main_board": true,
+          "latest_price": 35.50,
+          "is_limit_up": false,
+          "attention_score_20d": 113.3,
+          "theme_score": 72.0,
+          "tradability_flags": ["main_board"],
+          "risk_level": "low",
+          "action_label": "watch"
+        },
+        {
+          "ticker": "688981.SH",
+          "name": "中芯国际",
+          "theme_name": "半导体",
+          "source_type": "theme_detection",
+          "board_type": "star_market",
+          "is_main_board": false,
+          "latest_price": 85.20,
+          "is_limit_up": false,
+          "attention_score_20d": 24.0,
+          "theme_score": 72.0,
+          "tradability_flags": ["non_main_board"],
+          "risk_level": "low",
+          "action_label": "watch"
+        },
+        {
+          "ticker": "600584.SH",
+          "name": "长电科技",
+          "theme_name": "半导体",
+          "source_type": "attention_pool",
+          "board_type": "main_board_sh",
+          "is_main_board": true,
+          "latest_price": 35.50,
+          "is_limit_up": true,
+          "attention_score_20d": 113.3,
+          "theme_score": 72.0,
+          "tradability_flags": ["main_board", "limit_up"],
+          "risk_level": "low",
+          "action_label": "watch"
+        },
+        {
+          "ticker": "000858.SZ",
+          "name": "五粮液",
+          "theme_name": "白酒",
+          "source_type": "attention_pool",
+          "board_type": "main_board_sz",
+          "is_main_board": true,
+          "latest_price": 150.00,
+          "is_limit_up": false,
+          "attention_score_20d": 64.0,
+          "theme_score": 50.0,
+          "tradability_flags": ["main_board", "high_price"],
+          "risk_level": "low",
+          "action_label": "watch"
+        },
+        {
+          "ticker": "002475.SZ",
+          "name": "立讯精密",
+          "theme_name": "消费电子",
+          "source_type": "attention_pool",
+          "board_type": "main_board_sz",
+          "is_main_board": true,
+          "latest_price": 42.80,
+          "is_limit_up": false,
+          "attention_score_20d": 35.0,
+          "theme_score": 45.0,
+          "tradability_flags": ["main_board"],
+          "risk_level": "high",
+          "action_label": "avoid"
+        }
+      ]
+    }
+  ],
+  "out_of_pool_candidates": [
+    {
+      "ticker": "688008.SH",
+      "name": "澜起科技",
+      "theme_name": "半导体",
+      "why_not_in_attention_pool": "新进入半导体板块",
+      "why_still_worth_tracking": "板块最强标的之一",
+      "evidence": ["涨停", "成交额放大"],
+      "requires_replacement": true,
+      "risk_level": "low",
+      "action_label": "watch"
+    }
+  ]
+}
