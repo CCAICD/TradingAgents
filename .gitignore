@@ -221,3 +221,38 @@ __marimo__/
 # Enterprise env file (secrets) and generated run reports
 .env.enterprise
 reports/
+
+# ===== Project-local state directories =====
+# Ignore runtime data but allow directory structure and .gitkeep files
+
+# .tradingagents/ - project-local state
+.tradingagents/cache/*
+!.tradingagents/cache/.gitkeep
+.tradingagents/cache/checkpoints/*
+!.tradingagents/cache/checkpoints/.gitkeep
+.tradingagents/logs/*
+!.tradingagents/logs/.gitkeep
+.tradingagents/memory/*
+!.tradingagents/memory/.gitkeep
+.tradingagents/raw/*
+!.tradingagents/raw/.gitkeep
+.tradingagents/reports/*
+!.tradingagents/reports/.gitkeep
+.tradingagents/reflections/*
+!.tradingagents/reflections/.gitkeep
+
+# data/ - project data directories
+data/manual_hotlists/raw_text/*
+!data/manual_hotlists/raw_text/.gitkeep
+data/manual_hotlists/structured/*
+!data/manual_hotlists/structured/.gitkeep
+data/manual_hotlists/events/*
+!data/manual_hotlists/events/.gitkeep
+data/market_data/*
+!data/market_data/.gitkeep
+data/news/*
+!data/news/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
+data/portfolio/*
+!data/portfolio/.gitkeep

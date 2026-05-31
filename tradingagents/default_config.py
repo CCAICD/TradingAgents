@@ -1,6 +1,14 @@
 import os
+from pathlib import Path
 
-_TRADINGAGENTS_HOME = os.path.join(os.path.expanduser("~"), ".tradingagents")
+# Project root: resolved from this file's location (tradingagents/default_config.py).
+# TRADINGAGENTS_PROJECT_ROOT env var can override this for custom setups.
+_PROJECT_ROOT = Path(
+    os.getenv("TRADINGAGENTS_PROJECT_ROOT", str(Path(__file__).resolve().parents[1]))
+).resolve()
+
+# Local state directory: .tradingagents/ under project root.
+_TRADINGAGENTS_HOME = str(_PROJECT_ROOT / ".tradingagents")
 
 # Single source of truth for env-var → config-key overrides. To expose
 # a new config key for environment-based override, add a row here — no
@@ -43,7 +51,7 @@ def _apply_env_overrides(config: dict) -> dict:
 
 
 DEFAULT_CONFIG = _apply_env_overrides({
-    "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
+    "project_dir": str(_PROJECT_ROOT),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", os.path.join(_TRADINGAGENTS_HOME, "logs")),
     "data_cache_dir": os.getenv("TRADINGAGENTS_CACHE_DIR", os.path.join(_TRADINGAGENTS_HOME, "cache")),
     "memory_log_path": os.getenv("TRADINGAGENTS_MEMORY_LOG_PATH", os.path.join(_TRADINGAGENTS_HOME, "memory", "trading_memory.md")),

@@ -1,0 +1,144 @@
+# Data Freshness Configuration
+# 
+# This file defines freshness thresholds for all data sources
+# used by different report types across markets.
+#
+# Fields:
+#   max_age_seconds: Maximum age in seconds before data is considered stale
+#                    null = no time-based check (must still track date)
+#   required: Whether this dataset is required for the report
+#   required_trade_date: Data must be from this trade date (placeholder)
+#   required_full_session: Data must cover full trading session (placeholder)
+
+cn_stock:
+  # Pre-close report (尾盘辅助决策报告)
+  # Generated around 14:30-15:00
+  pre_close_report:
+    realtime_quote:
+      max_age_seconds: 120      # 2 minutes
+      required: true
+    minute_kline:
+      max_age_seconds: 600      # 10 minutes
+      required: true
+    order_book:
+      max_age_seconds: 120      # 2 minutes
+      required: false
+    sector_data:
+      max_age_seconds: 600      # 5-10 minutes
+      required: true
+    limit_up_pool:
+      max_age_seconds: 300      # 5 minutes
+      required: true
+    news:
+      max_age_seconds: 900      # 15 minutes
+      required: false
+    announcement:
+      max_age_seconds: 3600     # 30 minutes (conservative)
+      required: true
+    manual_hotlist:
+      max_age_seconds: null     # No time-based check, must track date
+      required: false
+
+  # Post-close report (盘后复盘报告)
+  # Generated after market close (15:00+)
+  post_close_report:
+    daily_kline:
+      required_trade_date: latest_trade_date
+      required: true
+    minute_kline:
+      required_full_session: true
+      required: true
+    sector_data:
+      max_age_seconds: 1800     # 30 minutes
+      required: true
+    limit_up_pool:
+      max_age_seconds: 1800     # 30 minutes
+      required: true
+    news:
+      max_age_seconds: 1800     # 30 minutes
+      required: false
+    announcement:
+      max_age_seconds: 7200     # 2 hours
+      required: true
+    manual_hotlist:
+      max_age_seconds: null
+      required: false
+
+  # Next-day plan (次日观察计划/次日计划)
+  # Generated after close or before next open
+  next_day_plan:
+    daily_kline:
+      required_trade_date: latest_trade_date
+      required: true
+    sector_data:
+      required_trade_date: latest_trade_date
+      required: true
+    limit_up_pool:
+      required_trade_date: latest_trade_date
+      required: true
+    news:
+      max_age_seconds: 43200    # 12 hours
+      required: false
+    announcement:
+      max_age_seconds: 43200    # 12 hours
+      required: true
+    manual_hotlist:
+      max_age_seconds: null
+      required: false
+
+  # Attention Pool build
+  attention_pool:
+    manual_hotlist:
+      max_age_seconds: null
+      required: false
+    legacy_hotlist:
+      max_age_seconds: null
+      required: false
+
+  # Market-Wide Scan (全市场扫描)
+  # Used for theme detection and market environment assessment
+  market_scan:
+    index_data:
+      max_age_seconds: 600      # 10 minutes
+      required: true
+    market_breadth:
+      max_age_seconds: 600      # 10 minutes
+      required: true
+    turnover_data:
+      max_age_seconds: 600      # 10 minutes
+      required: true
+    sector_data:
+      max_age_seconds: 600      # 10 minutes
+      required: true
+    limit_up_pool:
+      max_age_seconds: 300      # 5 minutes
+      required: true
+    strong_stock_rankings:
+      max_age_seconds: 600      # 10 minutes
+      required: false
+    attention_pool:
+      max_age_seconds: null     # Not time-based
+      required: false
+    announcement:
+      max_age_seconds: 3600     # 1 hour
+      required: false
+
+us_stock:
+  # US stock reports (placeholder)
+  daily_report:
+    realtime_quote:
+      max_age_seconds: 300
+      required: true
+    news:
+      max_age_seconds: 3600
+      required: false
+
+crypto:
+  # Crypto reports (placeholder)
+  daily_report:
+    realtime_quote:
+      max_age_seconds: 60
+      required: true
+    news:
+      max_age_seconds: 3600
+      required: false
