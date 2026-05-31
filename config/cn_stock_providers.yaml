@@ -1,0 +1,139 @@
+# A-Stock Data Providers Configuration
+#
+# This file defines the data providers for A-stock market analysis.
+#
+# Fields:
+#   enabled: Whether the provider is enabled
+#   type: local / external
+#   status: planned / skeleton / partial_implemented / implemented / deprecated
+#   datasets: List of supported dataset names
+#   rate_limit: Rate limiting configuration
+#   concurrency: Concurrency control configuration
+
+providers:
+  local_hotlist:
+    enabled: true
+    type: local
+    status: implemented
+    datasets:
+      - manual_hotlist
+      - attention_pool
+    concurrency:
+      max_concurrency: null  # Local provider, no limit
+      batch_preferred: false
+      notes:
+        - local file provider, no external request
+
+  mootdx:
+    enabled: true
+    type: external
+    status: partial_implemented
+    provider_class: tradingagents.markets.cn_stock.data_providers.mootdx_provider.MootdxProvider
+    rate_limit:
+      min_interval_seconds: 0.2
+      jitter_seconds: 0.05
+    concurrency:
+      max_concurrency: 1
+      batch_preferred: true
+      notes:
+        - use batch quote when possible
+        - avoid high frequency calls to TDX servers
+    datasets:
+      - daily_kline
+      - minute_kline
+      - index_kline
+      - realtime_quote
+      - order_book
+    notes:
+      - finance and F10 are planned for later phase
+      - network smoke tests are manual only
+      - requires domestic China IP for TCP connections to TDX servers
+
+  tencent:
+    enabled: true
+    type: external
+    status: skeleton
+    provider_class: tradingagents.markets.cn_stock.data_providers.tencent_provider.TencentProvider
+    rate_limit:
+      min_interval_seconds: 0.5
+      jitter_seconds: 0.1
+    concurrency:
+      max_concurrency: 1
+      batch_preferred: true
+      notes:
+        - endpoints not validated
+        - keep serial until validated
+    datasets:
+      - valuation
+      - market_cap
+      - turnover_rate
+      - limit_price
+    notes:
+      - endpoints require validation
+      - no default network tests
+      - returns not_implemented until endpoints confirmed
+
+  cninfo:
+    enabled: true
+    type: external
+    status: skeleton
+    provider_class: tradingagents.markets.cn_stock.data_providers.cninfo_provider.CninfoProvider
+    rate_limit:
+      min_interval_seconds: 1.0
+      jitter_seconds: 0.3
+    concurrency:
+      max_concurrency: 1
+      batch_preferred: false
+      notes:
+        - announcement queries must remain conservative
+        - failed cninfo must not be interpreted as no major negative
+    datasets:
+      - announcement
+    notes:
+      - endpoints require validation
+      - no default network tests
+      - returns not_implemented until endpoints confirmed
+      - announcement failure blocks "no major negative" claim
+
+  eastmoney:
+    enabled: false
+    type: external
+    status: planned
+    rate_limit:
+      min_interval_seconds: 1.0
+      jitter_seconds: 0.3
+    concurrency:
+      max_concurrency: 1
+      batch_preferred: true
+      notes:
+        - strict throttling required
+        - no uncontrolled parallel requests
+    datasets:
+      - sector_data
+      - money_flow
+      - news
+      - global_news
+
+  ths:
+    enabled: false
+    type: external
+    status: planned
+    concurrency:
+      max_concurrency: 1
+      batch_preferred: false
+    datasets:
+      - hot_topics
+      - consensus_forecast
+
+# Data freshness thresholds (seconds)
+# These are used by DataFreshnessGuard
+freshness_thresholds:
+  realtime_quote: 120
+  minute_kline: 600
+  daily_kline: null  # Must be latest trade date
+  sector_data: 600
+  limit_up_pool: 300
+  announcement: 3600
+  news: 900
+  attention_pool: null  # Not time-based
+  manual_hotlist: null  # Not time-based
