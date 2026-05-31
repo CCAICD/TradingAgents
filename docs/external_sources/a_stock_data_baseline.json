@@ -1,0 +1,34 @@
+{
+  "repo_url": "https://github.com/simonlin1212/a-stock-data",
+  "audited_at": "2026-05-31T19:38:00",
+  "audited_by": "opencode",
+  "audited_commit": "unknown",
+  "audited_branch": "main",
+  "audited_release": "v3.2.1",
+  "audited_files": {
+    "README.md": {
+      "exists": true,
+      "description": "项目说明文档，包含架构、端点清单、数据源优先级"
+    },
+    "SKILL.md": {
+      "exists": true,
+      "description": "核心代码文件，包含所有端点实现和 em_get 限流逻辑"
+    },
+    "CHANGELOG.md": {
+      "exists": true,
+      "description": "变更日志，记录版本更新和接口变化"
+    },
+    "LICENSE": {
+      "exists": true,
+      "description": "Apache-2.0 许可证"
+    }
+  },
+  "license": "Apache-2.0",
+  "integration_policy": "reference_only",
+  "notes": "初始审计基于 GitHub 页面和 README 内容。commit hash 未记录，需要后续补充。审计日期 2026-05-31。",
+  "risk_rules": {
+    "low": ["README 文档说明变化", "示例变化", "非接口相关说明变化"],
+    "medium": ["CHANGELOG 提到接口修复", "新增数据源", "修改限流建议", "修改依赖"],
+    "high": ["SKILL.md 中函数实现变化", "巨潮/东财/腾讯/mootdx 等关键接口变化", "删除或替换端点", "LICENSE 变化", "提到接口失效、封禁、鉴权变化"]
+  }
+}
