@@ -7,7 +7,7 @@ behavior we added for the Trader, Research Manager, and Sentiment Analyst
 so they share the same deterministic output shape.
 """
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from pydantic import ValidationError
@@ -319,7 +319,9 @@ def _structured_sentiment_llm(captured: dict, report: SentimentReport | None = N
 
 @pytest.mark.unit
 class TestSentimentAnalystAgent:
-    def test_structured_path_produces_rendered_markdown(self):
+    @patch("tradingagents.agents.analysts.sentiment_analyst.get_news")
+    def test_structured_path_produces_rendered_markdown(self, mock_get_news):
+        mock_get_news.func.return_value = "Mocked news data for testing."
         captured = {}
         report = SentimentReport(
             overall_band=SentimentBand.MILDLY_BEARISH, overall_score=4.0,
@@ -331,26 +333,34 @@ class TestSentimentAnalystAgent:
         assert "(Score: 4.0/10)" in sr
         assert "Mixed signals across sources." in sr
 
-    def test_sentiment_report_also_in_messages(self):
+    @patch("tradingagents.agents.analysts.sentiment_analyst.get_news")
+    def test_sentiment_report_also_in_messages(self, mock_get_news):
+        mock_get_news.func.return_value = "Mocked news data for testing."
         captured = {}
         analyst = create_sentiment_analyst(_structured_sentiment_llm(captured))
         result = analyst(_make_sentiment_state())
         assert len(result["messages"]) == 1
         assert result["sentiment_report"] == result["messages"][0].content
 
-    def test_prompt_contains_ticker(self):
+    @patch("tradingagents.agents.analysts.sentiment_analyst.get_news")
+    def test_prompt_contains_ticker(self, mock_get_news):
+        mock_get_news.func.return_value = "Mocked news data for testing."
         captured = {}
         create_sentiment_analyst(_structured_sentiment_llm(captured))(_make_sentiment_state())
         assert any("NVDA" in str(m) for m in captured["prompt"])
 
-    def test_falls_back_to_freetext_when_structured_unavailable(self):
+    @patch("tradingagents.agents.analysts.sentiment_analyst.get_news")
+    def test_falls_back_to_freetext_when_structured_unavailable(self, mock_get_news):
+        mock_get_news.func.return_value = "Mocked news data for testing."
         plain = "**Overall Sentiment:** **Bearish** (Score: 3.0/10)\n**Confidence:** Low\n\nLimited data."
         llm = MagicMock()
         llm.with_structured_output.side_effect = NotImplementedError("provider unsupported")
         llm.invoke.return_value = MagicMock(content=plain)
         assert create_sentiment_analyst(llm)(_make_sentiment_state())["sentiment_report"] == plain
 
-    def test_falls_back_to_freetext_when_structured_call_fails(self):
+    @patch("tradingagents.agents.analysts.sentiment_analyst.get_news")
+    def test_falls_back_to_freetext_when_structured_call_fails(self, mock_get_news):
+        mock_get_news.func.return_value = "Mocked news data for testing."
         plain = "Fallback free-text sentiment."
         structured = MagicMock()
         structured.invoke.side_effect = ValueError("bad JSON from model")
