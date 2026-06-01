@@ -1,5 +1,34 @@
 # Work Log
 
+## 2026-06-01 - Phase 4E.3.1: Cninfo Field Sample Validation
+
+**Goal:** Get 1 real Cninfo announcement sample for field confirmation
+
+**Completed:**
+- Ran 1 smoke test with corrected parameters (stock=000001,gssz0000001)
+- Got 5 real announcements
+- Confirmed all expected fields
+- Documented GBK encoding issue
+- Documented orgId requirement
+
+**Key Findings:**
+- stock parameter format: `<code>,<orgId>` (e.g., "000001,gssz0000001")
+- Response is GBK encoded, not UTF-8
+- announcementTime in milliseconds
+- PDF URL: http://static.cninfo.com.cn/ + adjunctUrl
+- No personal cookie required (got data without cookies)
+
+**Provider Status:**
+- CninfoProvider remains not_implemented
+- Readiness: ready_for_experimental_provider (pending user/ChatGPT approval)
+
+**Test Results:**
+- 547 tests passing, 0 failed
+
+**Next:** Wait for user/ChatGPT approval before implementing CninfoProvider
+
+---
+
 ## 2026-06-01 - Phase 4E.3: Cninfo Endpoint Validation
 
 **Goal:** Validate Cninfo announcement endpoint availability and structure
