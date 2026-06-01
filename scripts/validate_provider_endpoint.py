@@ -46,6 +46,48 @@ ENDPOINT_CONFIGS = {
             },
         },
     },
+    "tencent": {
+        "valuation": {
+            "url_template": "https://qt.gtimg.cn/q={symbol}",
+            "method": "GET",
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Referer": "https://finance.qq.com/",
+            },
+            "decode": "gbk",
+            "symbol_format": {
+                "sh_prefix": ["600", "601", "603", "605", "688", "689"],
+                "sz_prefix": ["000", "001", "002", "003", "300", "301"],
+            },
+        },
+        "market_cap": {
+            "url_template": "https://qt.gtimg.cn/q={symbol}",
+            "method": "GET",
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Referer": "https://finance.qq.com/",
+            },
+            "decode": "gbk",
+        },
+        "turnover_rate": {
+            "url_template": "https://qt.gtimg.cn/q={symbol}",
+            "method": "GET",
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Referer": "https://finance.qq.com/",
+            },
+            "decode": "gbk",
+        },
+        "limit_price": {
+            "url_template": "https://qt.gtimg.cn/q={symbol}",
+            "method": "GET",
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Referer": "https://finance.qq.com/",
+            },
+            "decode": "gbk",
+        },
+    },
 }
 
 
@@ -121,6 +163,19 @@ def validate_provider_endpoint(
             verbose=verbose,
             headers=headers or {},
             form_data=form_data or {},
+            decode=decode,
+        )
+
+    # For Tencent endpoints
+    if provider == "tencent" and dataset in ["valuation", "market_cap", "turnover_rate", "limit_price"]:
+        return _validate_tencent_endpoint(
+            symbol=symbol,
+            dataset=dataset,
+            config=config,
+            timeout=timeout,
+            raw_dir=raw_dir,
+            verbose=verbose,
+            headers=headers or {},
             decode=decode,
         )
 
@@ -253,6 +308,196 @@ def _validate_cninfo_announcement(
             "dataset": "announcement",
             "symbol": symbol,
         }
+
+
+def _validate_tencent_endpoint(
+    symbol: str,
+    dataset: str,
+    config: Dict[str, Any],
+    timeout: int,
+    raw_dir: Optional[Path],
+    verbose: bool,
+    headers: Dict[str, str],
+    decode: str,
+) -> Dict[str, Any]:
+    """Validate Tencent Finance endpoint."""
+    try:
+        import requests
+    except ImportError:
+        return {
+            "status": "error",
+            "error": "requests library not installed",
+        }
+
+    # Build URL
+    url_template = config.get("url_template", "")
+    if not url_template:
+        return {
+            "status": "error",
+            "error": "No URL template in config",
+        }
+
+    # Convert symbol to Tencent format (sh/sz prefix)
+    tencent_symbol = _convert_to_tencent_symbol(symbol)
+    url = url_template.format(symbol=tencent_symbol)
+
+    # Merge headers
+    request_headers = config.get("headers", {}).copy()
+    request_headers.update(headers)
+
+    # Get decode setting
+    response_decode = decode if decode != "utf-8" else config.get("decode", "utf-8")
+
+    if verbose:
+        print(f"URL: {url}")
+        print(f"Method: GET")
+        print(f"Headers: {json.dumps(request_headers, indent=2)}")
+        print(f"Decode: {response_decode}")
+
+    try:
+        response = requests.get(
+            url,
+            headers=request_headers,
+            timeout=timeout,
+        )
+
+        # Decode response
+        if response_decode == "auto":
+            try:
+                content = response.content.decode("gbk")
+            except UnicodeDecodeError:
+                try:
+                    content = response.content.decode("gb2312")
+                except UnicodeDecodeError:
+                    content = response.content.decode("utf-8", errors="replace")
+        else:
+            content = response.content.decode(response_decode, errors="replace")
+
+        result = {
+            "status": "success" if response.status_code == 200 else "failed",
+            "provider": "tencent",
+            "dataset": dataset,
+            "symbol": symbol,
+            "tencent_symbol": tencent_symbol,
+            "http_status": response.status_code,
+            "content_type": response.headers.get("Content-Type", ""),
+            "content_length": len(content),
+            "is_text": True,
+            "raw_content_preview": content[:500] if verbose else content[:300],
+        }
+
+        # Parse Tencent response format: v_sh600519="field1~field2~field3~..."
+        if content and "=" in content:
+            # Extract variable name and value
+            var_part, _, value_part = content.partition("=")
+            result["variable_name"] = var_part.strip()
+
+            # Remove quotes
+            value_part = value_part.strip().strip('"').strip(";").strip('"')
+
+            if value_part:
+                # Split by ~
+                fields = value_part.split("~")
+                result["field_count"] = len(fields)
+                result["fields"] = fields
+
+                # Known field positions (from public examples)
+                # This is just a reference, actual positions may vary
+                if len(fields) >= 45:
+                    result["likely_fields"] = {
+                        "name": fields[1] if len(fields) > 1 else None,
+                        "code": fields[2] if len(fields) > 2 else None,
+                        "current_price": fields[3] if len(fields) > 3 else None,
+                        "yesterday_close": fields[4] if len(fields) > 4 else None,
+                        "today_open": fields[5] if len(fields) > 5 else None,
+                        "volume": fields[6] if len(fields) > 6 else None,
+                        "outer_volume": fields[7] if len(fields) > 7 else None,
+                        "inner_volume": fields[8] if len(fields) > 8 else None,
+                        "buy1_price": fields[9] if len(fields) > 9 else None,
+                        "buy1_volume": fields[10] if len(fields) > 10 else None,
+                        "sell1_price": fields[19] if len(fields) > 19 else None,
+                        "sell1_volume": fields[20] if len(fields) > 20 else None,
+                        "timestamp": fields[30] if len(fields) > 30 else None,
+                        "change_amount": fields[31] if len(fields) > 31 else None,
+                        "change_percent": fields[32] if len(fields) > 32 else None,
+                        "highest": fields[33] if len(fields) > 33 else None,
+                        "lowest": fields[34] if len(fields) > 34 else None,
+                        "price_volume_amount": fields[35] if len(fields) > 35 else None,
+                        "volume_hand": fields[36] if len(fields) > 36 else None,
+                        "amount_wan": fields[37] if len(fields) > 37 else None,
+                        "turnover_rate": fields[38] if len(fields) > 38 else None,
+                        "pe_ratio": fields[39] if len(fields) > 39 else None,
+                        "amplitude": fields[43] if len(fields) > 43 else None,
+                        "circulating_market_cap": fields[44] if len(fields) > 44 else None,
+                        "total_market_cap": fields[45] if len(fields) > 45 else None,
+                        "pb_ratio": fields[46] if len(fields) > 46 else None,
+                        "limit_up_price": fields[47] if len(fields) > 47 else None,
+                        "limit_down_price": fields[48] if len(fields) > 48 else None,
+                    }
+            else:
+                result["fields"] = []
+                result["field_count"] = 0
+        else:
+            result["fields"] = []
+            result["field_count"] = 0
+
+        # Save raw payload if requested
+        if raw_dir:
+            raw_path = Path(raw_dir) / f"tencent_{dataset}_{symbol}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            raw_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(raw_path, "w", encoding="utf-8") as f:
+                f.write(content)
+            result["raw_payload_path"] = str(raw_path)
+
+        return result
+
+    except requests.exceptions.Timeout:
+        return {
+            "status": "failed",
+            "error": f"Request timeout after {timeout}s",
+            "provider": "tencent",
+            "dataset": dataset,
+            "symbol": symbol,
+        }
+    except requests.exceptions.ConnectionError as e:
+        return {
+            "status": "failed",
+            "error": f"Connection error: {str(e)[:200]}",
+            "provider": "tencent",
+            "dataset": dataset,
+            "symbol": symbol,
+        }
+    except Exception as e:
+        return {
+            "status": "failed",
+            "error": f"Unexpected error: {str(e)[:200]}",
+            "provider": "tencent",
+            "dataset": dataset,
+            "symbol": symbol,
+        }
+
+
+def _convert_to_tencent_symbol(symbol: str) -> str:
+    """Convert symbol to Tencent format (sh/sz prefix).
+
+    Args:
+        symbol: Stock symbol (e.g., "600519", "000001", "600519.SH")
+
+    Returns:
+        Tencent format symbol (e.g., "sh600519", "sz000001")
+    """
+    # Remove suffix if present
+    if "." in symbol:
+        symbol = symbol.split(".")[0]
+
+    # Determine market
+    if symbol.startswith(("600", "601", "603", "605", "688", "689")):
+        return f"sh{symbol}"
+    elif symbol.startswith(("000", "001", "002", "003", "300", "301")):
+        return f"sz{symbol}"
+    else:
+        # Default to sh
+        return f"sh{symbol}"
 
 
 def main():
