@@ -241,6 +241,9 @@ reports/
 .tradingagents/reflections/*
 !.tradingagents/reflections/.gitkeep
 
+# tradingagents/.tradingagents/ - misplaced runtime data (bug in raw_store.py)
+tradingagents/.tradingagents/
+
 # data/ - project data directories
 data/manual_hotlists/raw_text/*
 !data/manual_hotlists/raw_text/.gitkeep

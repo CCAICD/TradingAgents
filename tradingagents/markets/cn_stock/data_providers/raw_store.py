@@ -14,8 +14,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
+# Project root: resolved from this file's location
+# raw_store.py is at tradingagents/markets/cn_stock/data_providers/raw_store.py
+# parents[0] = data_providers, parents[1] = cn_stock, parents[2] = markets, parents[3] = tradingagents, parents[4] = project root
+_PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
 # Default raw payload root
-_DEFAULT_RAW_ROOT = Path(__file__).resolve().parents[3] / ".tradingagents" / "raw" / "cn_stock"
+_DEFAULT_RAW_ROOT = _PROJECT_ROOT / ".tradingagents" / "raw" / "cn_stock"
 
 
 class RawPayloadStore:
