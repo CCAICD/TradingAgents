@@ -1,5 +1,39 @@
 # Work Log
 
+## 2026-06-01 - Phase 4E.3.2: CninfoProvider Experimental v0.1
+
+**Goal:** Implement experimental CninfoProvider for announcement fetching
+
+**Completed:**
+- CninfoProvider experimental implementation
+- Support announcement dataset
+- orgId inference for stock codes
+- GBK encoding handling
+- PDF URL construction (no download)
+- 18 mock tests
+- Config updated to experimental status
+
+**Key Features:**
+- POST to https://www.cninfo.com.cn/new/hisAnnouncement/query
+- stock parameter format: `<code>,<orgId>`
+- Page size max 30 (truncation warning)
+- No cookie/session required
+- Empty/failed results warn about "no major negative"
+- risk_level_candidate = "not_evaluated"
+- matched_keywords = []
+
+**Provider Status:**
+- CninfoProvider: experimental (not skeleton, not implemented)
+- Disclosure Guard: NOT implemented
+- Reports: NOT implemented
+
+**Test Results:**
+- 549 tests passing, 0 failed
+
+**Next:** Update documentation and commit
+
+---
+
 ## 2026-06-01 - Phase 4E.3.1: Cninfo Field Sample Validation
 
 **Goal:** Get 1 real Cninfo announcement sample for field confirmation

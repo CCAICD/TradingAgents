@@ -5,7 +5,7 @@
 # Fields:
 #   enabled: Whether the provider is enabled
 #   type: local / external
-#   status: planned / skeleton / partial_implemented / implemented / deprecated
+#   status: planned / skeleton / partial_implemented / implemented / experimental / deprecated
 #   datasets: List of supported dataset names
 #   rate_limit: Rate limiting configuration
 #   concurrency: Concurrency control configuration
@@ -76,7 +76,7 @@ providers:
   cninfo:
     enabled: true
     type: external
-    status: skeleton
+    status: experimental
     provider_class: tradingagents.markets.cn_stock.data_providers.cninfo_provider.CninfoProvider
     rate_limit:
       min_interval_seconds: 1.0
@@ -85,15 +85,17 @@ providers:
       max_concurrency: 1
       batch_preferred: false
       notes:
-        - announcement queries must remain conservative
-        - failed cninfo must not be interpreted as no major negative
+        - experimental announcement provider
+        - no pdf download
+        - empty result must not be interpreted as no major negative event
+        - failures must block disclosure conclusions
     datasets:
       - announcement
     notes:
-      - endpoints require validation
-      - no default network tests
-      - returns not_implemented until endpoints confirmed
-      - announcement failure blocks "no major negative" claim
+      - experimental announcement provider
+      - no pdf download
+      - empty result must not be interpreted as no major negative event
+      - failures must block disclosure conclusions
 
   eastmoney:
     enabled: false
