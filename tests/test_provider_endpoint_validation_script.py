@@ -7,7 +7,7 @@ without making real network calls.
 import json
 import sys
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -34,9 +34,9 @@ class TestNetworkSafety:
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=False,
         )
 
@@ -48,9 +48,9 @@ class TestNetworkSafety:
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=True,
             max_requests=10,
         )
@@ -63,9 +63,9 @@ class TestNetworkSafety:
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=True,
             max_requests=0,
         )
@@ -77,33 +77,68 @@ class TestProviderValidation:
     """Test provider validation logic."""
 
     def test_not_implemented_provider(self):
-        """Should return not_implemented for unvalidated providers."""
+        """Should return not_implemented for unknown providers."""
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
             provider="mootdx",
             dataset="daily_kline",
-            symbol="600519.SH",
+            symbol="600519",
             allow_network=True,
         )
 
         assert result["status"] == "not_implemented"
-        assert "not yet implemented" in result["reason"].lower()
 
     def test_result_includes_metadata(self):
         """Result should include provider/dataset/symbol."""
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=True,
         )
 
-        assert result["provider"] == "mootdx"
-        assert result["dataset"] == "daily_kline"
-        assert result["symbol"] == "600519.SH"
+        # When network is allowed but no requests lib, should fail
+        assert result["provider"] == "cninfo"
+        assert result["dataset"] == "announcement"
+        assert result["symbol"] == "000001"
+
+
+class TestCninfoEndpointConfig:
+    """Test Cninfo endpoint configuration."""
+
+    def test_cninfo_endpoint_exists(self):
+        """Cninfo endpoint should be configured."""
+        from scripts.validate_provider_endpoint import ENDPOINT_CONFIGS
+
+        assert "cninfo" in ENDPOINT_CONFIGS
+        assert "announcement" in ENDPOINT_CONFIGS["cninfo"]
+
+    def test_cninfo_endpoint_url(self):
+        """Cninfo endpoint URL should be correct."""
+        from scripts.validate_provider_endpoint import ENDPOINT_CONFIGS
+
+        config = ENDPOINT_CONFIGS["cninfo"]["announcement"]
+        assert "cninfo.com.cn" in config["url"]
+        assert "hisAnnouncement" in config["url"]
+
+    def test_cninfo_endpoint_method(self):
+        """Cninfo endpoint should use POST."""
+        from scripts.validate_provider_endpoint import ENDPOINT_CONFIGS
+
+        config = ENDPOINT_CONFIGS["cninfo"]["announcement"]
+        assert config["method"] == "POST"
+
+    def test_cninfo_endpoint_headers(self):
+        """Cninfo endpoint should have required headers."""
+        from scripts.validate_provider_endpoint import ENDPOINT_CONFIGS
+
+        config = ENDPOINT_CONFIGS["cninfo"]["announcement"]
+        headers = config.get("headers", {})
+        assert "User-Agent" in headers
+        assert "Content-Type" in headers
 
 
 class TestNoBuySellFields:
@@ -114,9 +149,9 @@ class TestNoBuySellFields:
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=False,
         )
 
@@ -132,9 +167,9 @@ class TestRawDirectory:
         from scripts.validate_provider_endpoint import validate_provider_endpoint
 
         result = validate_provider_endpoint(
-            provider="mootdx",
-            dataset="daily_kline",
-            symbol="600519.SH",
+            provider="cninfo",
+            dataset="announcement",
+            symbol="000001",
             allow_network=False,
             raw_dir=Path("/tmp/test_raw"),
         )

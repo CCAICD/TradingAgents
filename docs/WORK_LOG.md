@@ -1,5 +1,52 @@
 # Work Log
 
+## 2026-06-01 - Phase 4E.3: Cninfo Endpoint Validation
+
+**Goal:** Validate Cninfo announcement endpoint availability and structure
+
+**Completed:**
+- Enhanced validate_provider_endpoint.py with POST/headers/form support
+- Ran 3 smoke tests against Cninfo endpoint
+- Endpoint is reachable (HTTP 200)
+- Response is JSON
+- Response structure confirmed
+
+**Findings:**
+- Endpoint: http://www.cninfo.com.cn/new/hisAnnouncement/query (POST)
+- Returns JSON with keys: classifiedAnnouncements, totalAnnouncement, announcements, hasMore, etc.
+- Empty results - likely needs orgId parameter or session cookies
+- No announcements returned in test queries
+
+**Test Results:**
+- 547 tests passing, 0 failed
+- CninfoProvider still returns not_implemented
+
+**Next:** Investigate orgId parameter and cookie requirements
+
+---
+
+## 2026-06-01 - Phase 4E.2.2: Untracked File Cleanup
+
+**Goal:** Clean up untracked files and fix path bug
+
+**Completed:**
+- Deleted docs/.gitkeep (unnecessary)
+- Deleted tradingagents/.tradingagents/ (misplaced runtime data)
+- Fixed raw_store.py path calculation (parents[3] → parents[4])
+- Updated .gitignore to ignore tradingagents/.tradingagents/
+
+**Findings:**
+- raw_store.py had bug: saved raw payloads to tradingagents/.tradingagents/ instead of project root
+- tradingagents/.tradingagents/ was NOT gitignored (could accidentally commit)
+- docs/.gitkeep was unnecessary (docs/ has 6 files)
+
+**Test Results:**
+- 543 tests passing, 0 failed
+
+**Next:** Continue provider research
+
+---
+
 ## 2026-06-01 - Phase 4E.2: Mootdx Smoke Test
 
 **Goal:** Validate MootdxProvider fields with real smoke test
