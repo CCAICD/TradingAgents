@@ -60,11 +60,16 @@
 - Phase 4E.4.1: TencentProvider experimental v0.1 ✅
 - Phase 4E.4.2: TencentProvider safety audit ✅
 
-### Phase 4F: Provider Orchestration / Freshness Aggregation ⏳ (Recommended Next)
-- Provider result aggregation
-- DataFreshnessGuard auto-summary
-- Multi-provider coordination
-- Not yet implemented
+### Phase 4F: Provider Orchestration / Freshness Aggregation ✅
+- ProviderRequest / ProviderRole / ProviderOrchestrationResult schemas
+- ProviderAggregationDecision schema
+- run_provider_request() with experimental/disabled handling
+- run_provider_plan() for multiple requests
+- aggregate_provider_results() with role-based semantics
+- Primary market data: failed/empty blocks, partial degrades
+- Supplementary data: only degrades, never blocks
+- Disclosure data: failed/empty adds disclosure unknown
+- 22 mock tests
 
 ### Phase 4G: Eastmoney Provider (Deferred)
 - Planned for future

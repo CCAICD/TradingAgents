@@ -1,5 +1,33 @@
 # Work Log
 
+## 2026-06-01 - Phase 4F: Provider Orchestration / Freshness Aggregation
+
+**Goal:** Build orchestration layer for provider coordination
+
+**Completed:**
+- ProviderRequest, ProviderRole, ProviderOrchestrationResult schemas
+- ProviderAggregationDecision schema
+- run_provider_request() function
+- run_provider_plan() function
+- aggregate_provider_results() function
+- build_orchestration_result() function
+- 22 mock tests
+
+**Key Features:**
+- Primary market data: failed/empty blocks, partial degrades
+- Supplementary data: failed/empty only degrades, never blocks
+- Disclosure data: failed/empty adds disclosure unknown
+- Experimental provider requires allow_experimental=True
+- Disabled provider returns skipped
+- Provider exceptions caught and returned as failed
+
+**Test Results:**
+- 583 tests passing, 0 failed
+
+**Next:** Update documentation and commit
+
+---
+
 ## 2026-06-01 - Phase 4E.4.3: Documentation Sync
 
 **Goal:** Sync all project documentation after provider audits
