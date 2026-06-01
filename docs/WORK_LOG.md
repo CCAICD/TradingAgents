@@ -1,5 +1,32 @@
 # Work Log
 
+## 2026-06-01 - Phase 4E.2: Mootdx Smoke Test
+
+**Goal:** Validate MootdxProvider fields with real smoke test
+
+**Completed:**
+- Smoke test script Unicode fix (✓/✗ → OK/FAIL)
+- daily_kline smoke test attempted for 600519.SH
+- mootdx 0.11.7 installed
+
+**Result:** ❌ FAILED - TDX server connection error
+
+**Error:** `head_buf is not 0x10 : b''`
+
+**Findings:**
+- mootdx requires working TDX server connection
+- Provider correctly handles connection failures
+- No provider code changes needed
+- Fields not validated (no data received)
+
+**Test Results:**
+- 543 tests passing, 0 failed
+- Smoke test failure is network/server issue, not code issue
+
+**Next:** Retry with different network environment or TDX server
+
+---
+
 ## 2026-05-31 - Phase 4D: Cninfo Provider Skeleton
 
 **Goal:** Build Cninfo provider adapter skeleton for announcement data

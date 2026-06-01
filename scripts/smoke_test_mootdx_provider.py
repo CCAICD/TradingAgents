@@ -131,7 +131,7 @@ def main():
         try:
             result = provider.fetch_and_normalize(dataset, **kwargs)
 
-            status_icon = "✓" if result.status == ProviderStatus.SUCCESS else "✗"
+            status_icon = "OK" if result.status == ProviderStatus.SUCCESS else "FAIL"
             print(f"  Status: {status_icon} {result.status.value}")
             print(f"  Fetched at: {result.fetched_at}")
             print(f"  As of time: {result.as_of_time}")
@@ -181,7 +181,7 @@ def main():
     print("Summary")
     print("=" * 60)
     for r in results_summary:
-        icon = "✓" if r["status"] == "success" else "✗"
+        icon = "OK" if r["status"] == "success" else "FAIL"
         print(f"  {icon} {r['dataset']}: {r['status']}")
         if r["error"]:
             print(f"    Error: {r['error']}")

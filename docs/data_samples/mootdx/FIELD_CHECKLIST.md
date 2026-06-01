@@ -143,3 +143,26 @@
 - [ ] Order book completeness
 - [ ] Beijing Exchange support
 - [ ] Server availability
+
+---
+
+## Smoke Test Results
+
+### 2026-06-01
+
+**mootdx version:** 0.11.7
+
+**Test:** daily_kline for 600519.SH
+**Result:** ❌ FAILED
+
+**Error:** `head_buf is not 0x10 : b''`
+
+**Root cause:** TDX server connection failed. Current network environment or TDX server did not return valid response.
+
+**Impact:** Fields not validated. Raw payload not generated. as_of_time not validated.
+
+**Provider behavior:** Correctly returned `ProviderResult(status=failed)` with error message.
+
+**Recommendation:** Retry with different network environment or available TDX server nodes.
+
+**Note:** This failure does not indicate provider code issues. Provider handles connection failures gracefully.

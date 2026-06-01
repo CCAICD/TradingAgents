@@ -9,8 +9,10 @@
 
 ### 2. mootdx Server Availability
 **Question:** Is mootdx TCP connection to TDX servers reliable from user's network environment?
-**Status:** Pending smoke test
+**Status:** Smoke test failed (2026-06-01)
+**Result:** `head_buf is not 0x10 : b''` - TDX server connection failed
 **Impact:** Affects reliability of real-time data
+**Next:** Retry with different network environment or available TDX server nodes
 
 ### 3. Beijing Exchange Support
 **Question:** Does mootdx support Beijing Exchange (北交所) symbols?
