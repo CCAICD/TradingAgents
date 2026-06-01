@@ -52,26 +52,29 @@ providers:
   tencent:
     enabled: true
     type: external
-    status: skeleton
+    status: experimental
     provider_class: tradingagents.markets.cn_stock.data_providers.tencent_provider.TencentProvider
     rate_limit:
       min_interval_seconds: 0.5
-      jitter_seconds: 0.1
+      jitter_seconds: 0.2
     concurrency:
       max_concurrency: 1
       batch_preferred: true
       notes:
-        - endpoints not validated
-        - keep serial until validated
+        - experimental supplementary provider
+        - not a primary market data source
+        - failures should degrade supplementary fields, not block primary market data
+        - field indices verified from limited smoke tests
     datasets:
       - valuation
       - market_cap
       - turnover_rate
       - limit_price
     notes:
-      - endpoints require validation
-      - no default network tests
-      - returns not_implemented until endpoints confirmed
+      - experimental supplementary provider
+      - not a primary market data source
+      - failures should degrade supplementary fields, not block primary market data
+      - field indices verified from limited smoke tests
 
   cninfo:
     enabled: true

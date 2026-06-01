@@ -1,5 +1,36 @@
 # Work Log
 
+## 2026-06-01 - Phase 4E.4.1: TencentProvider Experimental v0.1
+
+**Goal:** Implement experimental TencentProvider for supplementary data
+
+**Completed:**
+- TencentProvider experimental implementation
+- Support valuation, market_cap, turnover_rate, limit_price
+- GBK encoding handling
+- Symbol conversion (sh/sz prefix)
+- 27 mock tests
+- Config updated to experimental status
+
+**Key Features:**
+- GET to https://qt.gtimg.cn/q={symbol}
+- Symbol format: sh600519, sz000001
+- 88 fields, ~ separator
+- No cookie required
+- Supplementary source only (not primary)
+- empty/failed only degrades supplementary fields
+
+**Provider Status:**
+- TencentProvider: experimental
+- Not connected to reports/candidate selection/market-wide scan
+
+**Test Results:**
+- 561 tests passing, 0 failed
+
+**Next:** Update documentation and commit
+
+---
+
 ## 2026-06-01 - Phase 4E.4: Tencent Finance Endpoint Validation
 
 **Goal:** Validate Tencent Finance endpoint availability and field structure
