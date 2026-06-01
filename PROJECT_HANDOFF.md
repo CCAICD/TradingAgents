@@ -1357,12 +1357,52 @@ Phase 2.5 中 `--use-repaired-legacy` 分支只读取了修复文件（203 条�
 - 本阶段未实现真实并发 orchestrator
 - 未来 provider orchestration 必须遵守并发策略
 
-#### Phase 4E：akshare/东财数据源接入（未实现）
+#### Phase 4E：Endpoint 验证与 Experimental Providers（已完成）
 
 | 任务 | 状态 |
 |------|------|
-| akshare 板块/新闻/涨停/财联社 | ❌ 未实现 |
-| 东财/同花顺研报和一致预期 | ❌ 未实现（低优先级） |
+| Phase 4E.0 Provider endpoint 研究 | ✅ 已完成 |
+| Phase 4E.1 Provider validation harness | ✅ 已完成 |
+| Phase 4E.2 mootdx smoke test | ⚠️ 失败（TDX 连接问题） |
+| Phase 4E.3 Cninfo endpoint 验证 | ✅ 已完成 |
+| Phase 4E.3.1 Cninfo 字段样本确认 | ✅ 已完成 |
+| Phase 4E.3.2 CninfoProvider experimental v0.1 | ✅ 已完成 |
+| Phase 4E.3.3 CninfoProvider safety audit | ✅ 已完成 |
+| Phase 4E.4 Tencent endpoint 验证 | ✅ 已完成 |
+| Phase 4E.4.1 TencentProvider experimental v0.1 | ✅ 已完成 |
+| Phase 4E.4.2 TencentProvider safety audit | ✅ 已完成 |
+
+**Provider 当前状态：**
+
+| Provider | Status | Dataset | 备注 |
+|----------|--------|---------|------|
+| LocalHotlistProvider | implemented | manual_hotlist, attention_pool | 本地文件 |
+| MootdxProvider | partial_implemented | daily_kline, minute_kline, index_kline, realtime_quote, order_book | TDX 连接问题需复测 |
+| CninfoProvider | experimental | announcement | 不下载 PDF，不做风险判断 |
+| TencentProvider | experimental | valuation, market_cap, turnover_rate, limit_price | 补充源，不是主行情源 |
+| EastmoneyProvider | planned | sector_data, money_flow, news, global_news | 未实现 |
+| AkshareProvider | planned | 备用 | 未实现 |
+| THS provider | planned | hot_topics, consensus_forecast | 未实现 |
+
+**Provider 安全边界：**
+- Cninfo empty/failed ≠ 无重大利空
+- Tencent failed/empty 只降级补充字段，不阻断主行情
+- Tencent 不是主行情源
+- Cninfo success 只代表抓到公告列表，不代表风险判断
+- risk_level_candidate = not_evaluated
+- matched_keywords = []
+- 不输出 buy/sell/recommendation
+- 不下载 PDF
+- 不保存 cookie/session
+- 不默认联网测试
+
+#### Phase 4F：Provider Orchestration / Freshness Aggregation（推荐下一阶段）
+
+| 任务 | 状态 |
+|------|------|
+| Provider 结果聚合 | ❌ 未实现 |
+| DataFreshnessGuard 自动汇总 | ❌ 未实现 |
+| 多 provider 并行协调 | ❌ 未实现 |
 
 ### Phase 5：反思系统
 
@@ -1796,6 +1836,13 @@ Phase 2.5 中 `--use-repaired-legacy` 分支只读取了修复文件（203 条�
 | 2026-05-31 | Phase 4C Tencent Provider 骨架：实现 TencentProvider（继承 BaseCnStockProvider）；支持 valuation/market_cap/turnover_rate/limit_price 4 个 dataset；当前返回 not_implemented；接入 RateLimiter；RawPayloadStore 集成；cn_stock_providers.yaml 更新为 skeleton；15 个 mock 测试全部通过 | 腾讯估值数据骨架就绪 |
 | 2026-05-31 | Phase 4D Cninfo 巨潮公告 Provider 骨架：实现 CninfoProvider（继承 BaseCnStockProvider）；支持 announcement dataset；当前返回 not_implemented；接入 RateLimiter；RawPayloadStore 集成；cn_stock_providers.yaml 更新为 skeleton；16 个 mock 测试全部通过；公告失败时 error_message 提及"无重大利空"影响 | 公告数据骨架就绪 |
 | 2026-05-31 | Phase 4B.1 mootdx 字段校验基础设施：创建 FIELD_CHECKLIST.md；创建 docs/data_samples/mootdx/README.md；smoke test 默认不联网；未运行真实联网 smoke test | 字段校验基础设施就绪 |
+| 2026-06-01 | Phase 4D.2 Provider 并发抓取策略：实现 ProviderConcurrencyConfig schema；cn_stock_providers.yaml 增加 concurrency 配置；默认外部 provider max_concurrency=1；13 个测试全部通过 | 并发策略就绪 |
+| 2026-06-01 | Phase 4E.0 Provider endpoint 研究：研究 Tencent/Cninfo/mootdx endpoint；创建 PROVIDER_ENDPOINT_RESEARCH.md；创建 validate_provider_endpoint.py 验证框架 | endpoint 研究完成 |
+| 2026-06-01 | Phase 4E.2 mootdx smoke test：运行真实 smoke test；TDX 连接失败（head_buf is not 0x10）；Provider 正确返回 failed；网络环境问题，非代码问题 | mootdx 连接需国内网络 |
+| 2026-06-01 | Phase 4E.3 Cninfo endpoint 验证：运行 3 次真实请求；endpoint 可达；返回 JSON；announcements 为空（需 orgId 格式）；修正参数后成功获取 5 条公告 | Cninfo endpoint 已验证 |
+| 2026-06-01 | Phase 4E.3.2 CninfoProvider experimental v0.1：实现公告抓取；支持 ticker/org_id/start_date/end_date/page/page_size；GBK 编码处理；orgId 推断；PDF URL 拼接（不下载）；empty/failed 警告"不得解释为无重大利空"；18 个 mock 测试通过 | Cninfo 公告 provider 实验性可用 |
+| 2026-06-01 | Phase 4E.4 Tencent endpoint 验证：运行 2 次真实请求；endpoint 可达；返回 GBK text；88 字段以 ~ 分隔；确认 turnover_rate/pe_ratio/market_cap/pb_ratio/limit_price 字段位置 | Tencent endpoint 已验证 |
+| 2026-06-01 | Phase 4E.4.1 TencentProvider experimental v0.1：实现估值/市值/换手率/涨跌停价抓取；GBK 解码；symbol 转换（sh/sz 前缀）；补充源标记；27 个 mock 测试通过 | Tencent 补充 provider 实验性可用 |
 
 ---
 

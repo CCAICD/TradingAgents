@@ -38,3 +38,10 @@
 22. **Fetch results must be auditable.** raw_payload_path required.
 23. **No uncontrolled parallel requests.** RateLimiter must be respected.
 24. **Batch requests preferred over individual requests.** When provider supports it.
+
+## Supplementary Providers
+
+25. **Provider success only means data fetched.** Not investment advice.
+26. **Disclosure risk requires future Disclosure Guard.** Provider does not assess risk.
+27. **Supplementary provider failure must degrade, not silently succeed.** empty/failed = missing supplementary data.
+28. **No report may claim safety from missing data.** Missing data = unknown, not safe.

@@ -23,41 +23,59 @@
 - smoke_test_mootdx_provider.py
 - 34 mock unit tests
 
-### Phase 4B.1: Mootdx Smoke Test & Field Checklist 🔄
-- Enhance smoke_test_mootdx_provider.py
+### Phase 4B.1: Mootdx Smoke Test & Field Checklist ✅
 - FIELD_CHECKLIST.md for mootdx datasets
 - docs/data_samples/mootdx/README.md
-- No real network tests tonight
+- Smoke test defaults to no network
+- Real smoke test failed (TDX connection issue)
 
-### Phase 4C: Tencent Provider Skeleton ⏳
+### Phase 4C: Tencent Provider Skeleton ✅ → Phase 4E.4.1 Experimental ✅
 - TencentProvider (inherits BaseCnStockProvider)
 - Datasets: valuation, market_cap, turnover_rate, limit_price
-- Lazy HTTP (no default network)
-- Mock unit tests
-- Not implemented endpoints return not_implemented
+- Endpoint validated (2 real requests)
+- Experimental v0.1 implemented
+- 27 mock unit tests
 
-### Phase 4D: Cninfo Provider Skeleton ⏳
+### Phase 4D: Cninfo Provider Skeleton ✅ → Phase 4E.3.2 Experimental ✅
 - CninfoProvider (inherits BaseCnStockProvider)
 - Dataset: announcement
-- Announcement schema fields
-- Lazy HTTP (no default network)
-- Mock unit tests
-- Not implemented endpoints return not_implemented
+- Endpoint validated (3 real requests)
+- Experimental v0.1 implemented
+- 18 mock unit tests
 
-### Phase 4E: Eastmoney Provider (Deferred)
-- Not tonight
-- Planned for future
+### Phase 4D.2: Provider Concurrency Policy ✅
+- ProviderConcurrencyConfig
+- External providers default max_concurrency=1
+- Conservative rate limits
 
-### Phase 4F: Provider Orchestration & Freshness Auto-Summary (Deferred)
-- Not tonight
+### Phase 4E: Endpoint Validation & Experimental Providers ✅
+- Phase 4E.0: Provider endpoint research ✅
+- Phase 4E.1: Provider validation harness ✅
+- Phase 4E.2: Mootdx smoke test (failed - TDX connection) ⚠️
+- Phase 4E.3: Cninfo endpoint validation ✅
+- Phase 4E.3.1: Cninfo field sample confirmation ✅
+- Phase 4E.3.2: CninfoProvider experimental v0.1 ✅
+- Phase 4E.3.3: CninfoProvider safety audit ✅
+- Phase 4E.4: Tencent endpoint validation ✅
+- Phase 4E.4.1: TencentProvider experimental v0.1 ✅
+- Phase 4E.4.2: TencentProvider safety audit ✅
+
+### Phase 4F: Provider Orchestration / Freshness Aggregation ⏳ (Recommended Next)
+- Provider result aggregation
+- DataFreshnessGuard auto-summary
+- Multi-provider coordination
+- Not yet implemented
+
+### Phase 4G: Eastmoney Provider (Deferred)
 - Planned for future
+- Not yet implemented
 
 ---
 
 ## Phase 5: Real Data Integration
 
 ### Phase 5A: Market-Wide Scan Real Data ⏳
-- Connect mootdx to Market-Wide Scan schema
+- Connect providers to Market-Wide Scan schema
 - Real-time market breadth data
 - Sector data integration
 
