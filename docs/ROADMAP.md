@@ -70,6 +70,7 @@
 - Supplementary data: only degrades, never blocks
 - Disclosure data: failed/empty adds disclosure unknown
 - 22 mock tests
+- Phase 4F.1 safety audit ✅
 
 ### Phase 4G: Eastmoney Provider (Deferred)
 - Planned for future

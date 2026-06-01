@@ -54,6 +54,26 @@
 **Status:** Not implemented, deferred
 **Impact:** May need PDF parsing for risk assessment
 
+### 11. Async/Concurrency Worker
+**Question:** Does orchestration need async worker for concurrent provider calls?
+**Status:** Not implemented, current is serial
+**Impact:** May improve performance for multi-provider requests
+
+### 12. Provider Priority / Fallback Order
+**Question:** Should orchestration support provider priority or fallback?
+**Status:** Not implemented
+**Impact:** Could improve data availability when primary provider fails
+
+### 13. Persistent Provider Run Manifest
+**Question:** Should orchestration results be persisted for audit?
+**Status:** Not implemented
+**Impact:** Could improve debugging and audit trail
+
+### 14. Orchestration → Market-Wide Scan Integration
+**Question:** How should orchestration connect to Market-Wide Scan?
+**Status:** Not implemented
+**Impact:** Required for Phase 5A
+
 ---
 
 ## Resolved Questions

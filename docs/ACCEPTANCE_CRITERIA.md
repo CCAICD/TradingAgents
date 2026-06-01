@@ -45,3 +45,11 @@
 26. **Disclosure risk requires future Disclosure Guard.** Provider does not assess risk.
 27. **Supplementary provider failure must degrade, not silently succeed.** empty/failed = missing supplementary data.
 28. **No report may claim safety from missing data.** Missing data = unknown, not safe.
+
+## Orchestration
+
+29. **Orchestration does not output investment advice.** Only aggregation decisions.
+30. **Experimental provider cannot be silently used as stable.** Requires allow_experimental=True.
+31. **Disclosure unknown cannot be interpreted as safe.** Missing disclosure = unknown risk.
+32. **Supplementary missing only degrades.** Never blocks primary flow.
+33. **Primary failed blocks downstream.** Only primary success allows continuation.

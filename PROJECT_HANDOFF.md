@@ -1396,15 +1396,45 @@ Phase 2.5 中 `--use-repaired-legacy` 分支只读取了修复文件（203 条�
 - 不保存 cookie/session
 - 不默认联网测试
 
-#### Phase 4F：Provider Orchestration / Freshness Aggregation（推荐下一阶段）
+#### Phase 4F：Provider Orchestration / Freshness Aggregation（已完成）
 
 | 任务 | 状态 |
 |------|------|
-| Provider 结果聚合 | ❌ 未实现 |
-| DataFreshnessGuard 自动汇总 | ❌ 未实现 |
-| 多 provider 并行协调 | ❌ 未实现 |
+| ProviderRequest schema | ✅ 已完成 |
+| ProviderRole 枚举 | ✅ 已完成 |
+| ProviderOrchestrationResult schema | ✅ 已完成 |
+| ProviderAggregationDecision schema | ✅ 已完成 |
+| run_provider_request() | ✅ 已完成 |
+| run_provider_plan() | ✅ 已完成 |
+| aggregate_provider_results() | ✅ 已完成 |
+| build_orchestration_result() | ✅ 已完成 |
+| blocking/degradation/unknown 语义 | ✅ 已完成 |
+| experimental provider allow 规则 | ✅ 已完成 |
+| 22 个 mock 测试 | ✅ 全部通过 |
 
-### Phase 5：反思系统
+**核心语义：**
+- primary_market_data: failed/empty → blocking, partial → degradation
+- supplementary_data: failed/empty → degradation only, never blocks
+- disclosure_data: failed/empty → disclosure unknown (cannot infer no major negative)
+- attention_data: failed/empty → degradation
+- experimental provider: requires allow_experimental=True
+
+**注意：**
+- 本阶段只做 orchestration/aggregation 骨架
+- 未接入报告、选股、Market-Wide Scan
+- 未实现 Disclosure Guard
+- 未运行真实联网请求
+
+#### Phase 4F.1：Provider Orchestration Safety Audit（当前阶段）
+
+| 任务 | 状态 |
+|------|------|
+| 代码安全审查 | ✅ 已完成 |
+| 语义安全检查 | ✅ 已完成 |
+| 测试覆盖检查 | ✅ 已完成 |
+| 文档同步 | ✅ 已完成 |
+
+#### Phase 5A：Market-Wide Scan 真实数据接入（下一阶段规划）
 
 | 任务 | 状态 |
 |------|------|
@@ -1843,6 +1873,7 @@ Phase 2.5 中 `--use-repaired-legacy` 分支只读取了修复文件（203 条�
 | 2026-06-01 | Phase 4E.3.2 CninfoProvider experimental v0.1：实现公告抓取；支持 ticker/org_id/start_date/end_date/page/page_size；GBK 编码处理；orgId 推断；PDF URL 拼接（不下载）；empty/failed 警告"不得解释为无重大利空"；18 个 mock 测试通过 | Cninfo 公告 provider 实验性可用 |
 | 2026-06-01 | Phase 4E.4 Tencent endpoint 验证：运行 2 次真实请求；endpoint 可达；返回 GBK text；88 字段以 ~ 分隔；确认 turnover_rate/pe_ratio/market_cap/pb_ratio/limit_price 字段位置 | Tencent endpoint 已验证 |
 | 2026-06-01 | Phase 4E.4.1 TencentProvider experimental v0.1：实现估值/市值/换手率/涨跌停价抓取；GBK 解码；symbol 转换（sh/sz 前缀）；补充源标记；27 个 mock 测试通过 | Tencent 补充 provider 实验性可用 |
+| 2026-06-01 | Phase 4F Provider Orchestration / Freshness Aggregation：实现 ProviderRequest/ProviderRole/ProviderOrchestrationResult/ProviderAggregationDecision schema；实现 run_provider_request() 带 experimental/disabled 处理；实现 run_provider_plan() 多请求执行；实现 aggregate_provider_results() 带角色语义（primary blocking/supplementary degradation/disclosure unknown）；22 个 mock 测试通过；583 个测试全部通过 | Provider 编排层就绪 |
 
 ---
 
